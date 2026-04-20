@@ -24,7 +24,7 @@ git init
 git add .
 git commit -m "initial deploy"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/contraste-atelier.git
+git remote add origin https://github.com/emilioopicazo/contraste-atelier.git
 git push -u origin main
 ```
 
