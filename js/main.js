@@ -8,10 +8,10 @@
    ★ SITE CONFIG — UPDATE THESE VALUES
 ═══════════════════════════════════════ */
 const SITE = {
-  whatsapp:   '529841234567',          // ← Change to real WhatsApp (no + no spaces)
-  instagram:  'contraste.tulum',       // ← IG handle (no @)
-  email:      'contraste.tulum@gmail.com',
-  mapsUrl:    'https://maps.google.com/?q=Tulum,Mexico', // ← Replace with exact Maps link
+  whatsapp:   '525530374167',
+  instagram:  'contraste.tulum',
+  email:      'contraste-atelier@gmail.com',
+  mapsUrl:    'https://maps.google.com/?q=Tulum,Mexico',
 };
 
 /* ═══════════════════════════════════════
@@ -115,32 +115,16 @@ const COLABORADORES = [
     name: 'Sunset Seeker',
     sub: 'Silver Jewelry Brand',
     desc: 'Ocean-inspired fine silver jewelry designed for the free spirit. Sister brand of CONTRASTE — same craft, a different story.',
-    link: 'https://instagram.com/sunsetseeker',  // ← Update with real handle
-    linkLabel: '@sunsetseeker ↗',
+    link: 'https://instagram.com/sunsetseekker',
+    linkLabel: '@sunsetseekker ↗',
   },
   {
     num: '02',
-    name: 'Adrián García',
+    name: 'Adrián Morejón',
     sub: 'Master Jeweler · Artesano',
-    desc: 'The hands behind every piece made in this atelier. 12+ years crafting silver in Tulum. Teaches every class. Signs every custom piece.',
-    link: 'https://instagram.com/contraste.tulum', // ← Update with Adrián\'s IG
-    linkLabel: '@contraste.tulum ↗',
-  },
-  {
-    num: '03',
-    name: 'Amorelafuente',
-    sub: 'Consignment · Brand Partner',
-    desc: 'Available at CONTRASTE on consignment. Stop by the atelier to browse the full collection.',
-    link: 'https://instagram.com/amorelafuente',  // ← Update with real link
-    linkLabel: '@amorelafuente ↗',
-  },
-  {
-    num: '04',
-    name: 'Humans',
-    sub: 'Brand Partner',
-    desc: 'Thoughtful pieces by a brand that believes in slow design. Find them at the atelier.',
-    link: '#',  // ← Update with real link
-    linkLabel: 'Visit ↗',
+    desc: 'The hands behind every piece made in this atelier. 12+ years crafting silver in Tulum. Also behind @a.morelafuente and @humans.',
+    link: 'https://instagram.com/a.morelafuente',
+    linkLabel: '@a.morelafuente ↗',
   },
 ];
 
@@ -156,22 +140,22 @@ const IG_PROFILES = [
     bio:    'Joyería artesanal · Tulum, MX · Clases · Custom',
     link:   'https://instagram.com/contraste.tulum',
     initials: 'CA',
-    posts:  ['','','','','','','','',''],  // ← Replace with 'assets/img/ig-ca-1.webp' etc.
+    posts:  ['','','','','','','','',''],
   },
   {
     id:     'ig-sunset',
-    handle: '@sunsetseeker',
+    handle: '@sunsetseekker',
     bio:    'Ocean-inspired silver jewelry · Free spirit',
-    link:   'https://instagram.com/sunsetseeker',   // ← Update
+    link:   'https://instagram.com/sunsetseekker',
     initials: 'SS',
     posts:  ['','','','','','','','',''],
   },
   {
     id:     'ig-adrian',
-    handle: '@adrián',
-    bio:    'Master jeweler · 12+ years in silver craft',
-    link:   'https://instagram.com/contraste.tulum', // ← Update with Adrián\'s IG
-    initials: 'AG',
+    handle: '@a.morelafuente',
+    bio:    'Adrián Morejón · Diseño de joyería · Tulum',
+    link:   'https://instagram.com/a.morelafuente',
+    initials: 'AM',
     posts:  ['','','','','','','','',''],
   },
 ];
