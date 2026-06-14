@@ -1,597 +1,378 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-head="grotesque">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta name="description" content="CONTRASTE ATELIER — Jewelry atelier inside a former mechanic's workshop. Tulum, Mexico. Custom silver jewelry, classes, concept store.">
-  <meta name="theme-color" content="#0E0D0B">
-  <meta property="og:title" content="CONTRASTE ATELIER">
-  <meta property="og:description" content="Jewelry atelier inside a former mechanic's workshop. Tulum, Mexico.">
-  <meta property="og:image" content="assets/img/LOGO-05.png">
-  <title>CONTRASTE ATELIER</title>
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@300;400;500&family=Hanken+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/styles.css">
-
-  <!--
-  ═══════════════════════════════════════════════════════════════
-   HOW TO EDIT THIS SITE
-   ─────────────────────
-   1. TEXT & PRICES  → js/main.js → CONTENT, PRODUCTS, CLASSES objects
-   2. SITE CONFIG    → js/main.js → SITE object (WhatsApp, Instagram, Maps)
-   3. IMAGES         → Search for "EDIT-IMAGE" in this file
-                       Replace placeholder div with: <img src="assets/img/photo.webp">
-   4. COLLABORATORS  → js/main.js → COLABORADORES array
-   5. INSTAGRAM FEED → js/main.js → IG_PROFILES array (posts paths)
-   6. NEW PRODUCTS   → js/main.js → PRODUCTS array (add/remove objects)
-  ═══════════════════════════════════════════════════════════════
-  -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contraste Atelier — Jewelry Workshop & Creative Studio · La Veleta, Tulum</title>
+<meta name="description" content="An experimental jewelry workshop in La Veleta, Tulum. Private experiences in wax modeling, lost-wax casting and silver inside a real atelier.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Archivo:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script>
+  /* site config — set the real WhatsApp number (intl, digits only) and contact email */
+  window.CA_CONFIG = { waNumber: '5219840000000', email: '' };
+  /* AVAILABILITY — edit these days/times to publish your open slots (YYYY-MM-DD, 24h times) */
+  window.CA_AVAILABILITY = [
+    { date: '2026-06-20', slots: ['10:00', '13:00', '16:00'] },
+    { date: '2026-06-21', slots: ['11:00', '15:00'] },
+    { date: '2026-06-27', slots: ['10:00', '13:00', '16:00'] },
+    { date: '2026-06-28', slots: ['11:00', '15:00'] },
+    { date: '2026-07-04', slots: ['10:00', '13:00'] },
+    { date: '2026-07-05', slots: ['11:00', '15:00', '17:00'] }
+  ];
+  /* mark JS available before first paint so the hero stays hidden until the preloader finishes */
+  document.documentElement.classList.add('js');
+  /* safety: never trap the user behind the preloader if the main script stalls */
+  setTimeout(function(){ document.documentElement.classList.add('loaded'); }, 4500);
+</script>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════════════════════════════ -->
-<nav id="nav">
-  <a href="#hero">
-    <img src="assets/img/wordmark-crema.png" alt="CONTRASTE ATELIER" style="height:clamp(1rem,2.8vw,1.5rem);display:block">
+<!-- ====================== PRELOADER ====================== -->
+<div class="preloader" id="preloader" role="status" aria-label="Loading Contraste Atelier">
+  <img class="preloader__star" src="assets/star-black.png" alt="">
+  <span class="preloader__wm">Contraste</span>
+</div>
+
+<!-- ====================== HEADER ====================== -->
+<header class="head" id="head">
+  <a class="brand" href="#top" aria-label="Contraste Atelier home">
+    <img src="assets/star-cream.png" alt="">
+    <span class="wm">Contraste</span>
   </a>
-  <div class="nav-links">
-    <a href="#shop"          id="nav-shop">Shop</a>
-    <a href="#classes"       id="nav-classes">Classes</a>
-    <a href="#espacio"       id="nav-espacio">Espacio</a>
-    <a href="#colaboradores" id="nav-collabs">Collabs</a>
-    <a href="#contact"       id="nav-contact">Contact</a>
-  </div>
-  <div class="nav-right">
-    <span class="lang-toggle" id="langToggle">EN</span>
-    <button class="cart-btn" onclick="toggleCart()">
-      <span id="nav-cart-label">Cart</span>
-      <span class="cart-count" id="cartCount">0</span>
+  <div class="head__right">
+    <button class="lang-toggle" id="langToggle" aria-label="Language / Idioma">
+      <span class="lang-toggle__o" data-lang="en">EN</span><span class="lang-toggle__sep">/</span><span class="lang-toggle__o" data-lang="es">ES</span>
     </button>
-    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
+    <a class="head__link" href="#experiences" data-es="Experiencias">Experiences</a>
+    <a class="head__link" href="#gallery" data-es="Galería">Gallery</a>
+    <a class="head__link" href="#instagram" data-es="Instagram">Instagram</a>
+    <button class="cart-btn" id="cartBtn" aria-label="Open your reservation">
+      <span class="cart-btn__lbl" data-es="Reservar">Reserve</span>
+      <span class="cart-count" id="cartCount" data-empty="true">0</span>
     </button>
   </div>
-</nav>
+</header>
 
-<!-- Mobile menu -->
-<div id="mobile-menu">
-  <button class="close-btn" onclick="toggleMenu()">✕</button>
-  <a href="#shop"          onclick="toggleMenu()" id="mm-shop">Shop</a>
-  <a href="#classes"       onclick="toggleMenu()" id="mm-classes">Classes</a>
-  <a href="#espacio"       onclick="toggleMenu()" id="mm-espacio">Espacio</a>
-  <a href="#colaboradores" onclick="toggleMenu()" id="mm-collabs">Collabs</a>
-  <a href="#contact"       onclick="toggleMenu()" id="mm-contact">Contact</a>
-</div>
+<main id="top">
 
-
-<!-- ═══════════════════════════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════════════════════════ -->
-<section id="hero">
-  <div class="hero-left">
-    <div class="hero-tag" id="hero-tag">Tulum, Mexico · Est. 2026</div>
-    <h1 class="hero-headline" id="hero-hl">Where<br>industrial<br>meets fine.</h1>
-    <p class="hero-body" id="hero-body">A jewelry atelier inside a former mechanic's workshop. Raw stones, hammered silver, wax-cast rings. The building used to fix engines. Now it holds something more delicate.</p>
-    <div class="hero-cta">
-      <a href="#shop"    class="btn-primary" id="hero-cta1">Shop the collection</a>
-      <a href="#classes" class="btn-ghost"   id="hero-cta2">Book a class →</a>
-    </div>
+<!-- ====================== 01 · HERO ====================== -->
+<section class="hero zone zone--ink" id="hero">
+  <div class="hero__media">
+    <video class="media__v hero__v hero__v--desktop" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+      <source src="uploads/contraste_web_hero.mp4" type="video/mp4">
+    </video>
+    <video class="media__v hero__v hero__v--mobile" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+      <source src="uploads/contraste_mobile_hero.mp4" type="video/mp4">
+    </video>
   </div>
+  <div class="hero__inner wrap">
+    <a class="hero__eyebrow-link h-rise" style="--hd:.1s" href="#experiences" data-es="Ver todas las experiencias <span class='arrow'>→</span>">See all experiences <span class="arrow">→</span></a>
+    <h1 class="display h-rise" style="--hd:.2s" data-es="Joyería experimental, hecha a mano.">Experimental jewelry, made by hand.</h1>
+    <a class="hero__reserve h-rise" style="--hd:.4s" href="#reserve" data-es="Reservar una fecha <span class='arrow'>→</span>">Reserve a date <span class="arrow">→</span></a>
+  </div>
+</section>
 
-  <!-- EDIT-IMAGE: Replace .hero-right-overlay gradient with a real photo or video
-       Option A: <div class="hero-right" style="background-image:url('assets/img/hero.webp');background-size:cover">
-       Option B: <video autoplay muted loop playsinline> inside .hero-right
-  -->
-  <div class="hero-right">
-    <div class="hero-right-overlay"></div>
-    <div class="hero-right-content">
-      <img src="assets/img/wordmark-crema.png" alt="CONTRASTE ATELIER" style="width:clamp(140px,30vw,260px);display:block;margin-bottom:1.5rem;opacity:.95">
-      <div class="hero-right-meta" id="hero-meta">
-        Sterling Silver .925<br>
-        Raw &amp; Semi-precious Stones<br>
-        Classes · Custom · Concept Store<br>
-        <br>Tulum, Mexico
+<!-- stats / trust bar -->
+<section class="stats zone zone--ink" aria-label="The workshop at a glance">
+  <div class="wrap stats__grid">
+    <div class="stat reveal"><span class="stat__n">3</span><span class="stat__l" data-es="Formatos de taller">Workshop formats</span><span class="stat__s" data-es="Cera · Metal · Membresía">Wax · Metal · Membership</span></div>
+    <div class="stat reveal" data-d="1"><span class="stat__n">2H</span><span class="stat__l" data-es="Sesiones guiadas">Guided sessions</span><span class="stat__s" data-es="Duración media de clase">Average class duration</span></div>
+    <div class="stat reveal" data-d="2"><span class="stat__n">4</span><span class="stat__l" data-es="Personas máx.">People max</span><span class="stat__s" data-es="Grupos pequeños">Small group experience</span></div>
+    <div class="stat reveal" data-d="3"><span class="stat__n">$1,250</span><span class="stat__l" data-es="Desde">Starting at</span><span class="stat__s" data-es="Taller de modelado en cera">Wax modeling workshop</span></div>
+  </div>
+</section>
+
+<!-- ====================== 02 · ABOUT ====================== -->
+<section class="section zone zone--ink" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="h2" data-es="No es una clase. Una entrada al taller.">Not a class. An entrance to the workshop.</h2>
+    </div>
+
+    <div class="about">
+      <div class="about__media reveal">
+        <figure class="media reveal reveal-media">
+          <video class="media__v" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+            <source src="uploads/IMG_5588_web.mp4" type="video/mp4">
+          </video>
+        </figure>
+        <span class="about__tag">La Veleta · Tulum</span>
       </div>
-      <div class="hero-right-scroll" id="hero-scroll">Scroll to explore</div>
+      <div class="body reveal" data-d="1">
+        <p class="lead" data-es="CONTRASTE ATELIER es un taller de joyería y estudio creativo, construido en torno al proceso, el material y la mano.">CONTRASTE ATELIER is a jewelry workshop and creative studio built around process, material and the hand.</p>
+        <p class="muted" data-es="Trabajamos con cera, plata, fuego y herramientas para crear piezas desde cero — y abrimos ese proceso a quien quiera vivir la joyería desde adentro. El resultado no es solo un objeto. Es el tiempo, el calor y las decisiones que lo formaron.">We work with wax, silver, fire and tools to make pieces from scratch — and we open that process to anyone who wants to experience jewelry from the inside. The result isn't only an object. It's the time, heat and decisions that built it.</p>
+        <ul class="keys">
+          <li><span class="n">01</span><span class="t" data-es="Un taller real en La Veleta, Tulum — no una actividad turística.">A real workshop in La Veleta, Tulum — not a tourist activity.</span></li>
+          <li><span class="n">02</span><span class="t" data-es="Sesiones privadas o grupos pequeños, con reservación.">Private sessions or small groups, by reservation.</span></li>
+          <li><span class="n">03</span><span class="t" data-es="Proceso artesanal: modelado en cera, cera perdida, piezas hechas a mano.">Artisanal process: wax modeling, lost-wax, handmade pieces.</span></li>
+          <li><span class="n">04</span><span class="t" data-es="Sin experiencia previa — el taller te guía.">No previous experience required — the workshop guides you.</span></li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Ticker -->
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-inner">
-    <span>Handmade in Tulum</span><span class="ticker-dot"> · </span>
-    <span>Sterling Silver .925</span><span class="ticker-dot"> · </span>
-    <span>Classes Available</span><span class="ticker-dot"> · </span>
-    <span>Custom Orders Open</span><span class="ticker-dot"> · </span>
-    <span>One of One Pieces</span><span class="ticker-dot"> · </span>
-    <span>Raw Stone Collection</span><span class="ticker-dot"> · </span>
-    <span>Wax Cast · Lost Wax Process</span><span class="ticker-dot"> · </span>
-    <span>Handmade in Tulum</span><span class="ticker-dot"> · </span>
-    <span>Sterling Silver .925</span><span class="ticker-dot"> · </span>
-    <span>Classes Available</span><span class="ticker-dot"> · </span>
-    <span>Custom Orders Open</span><span class="ticker-dot"> · </span>
-    <span>One of One Pieces</span><span class="ticker-dot"> · </span>
-    <span>Raw Stone Collection</span><span class="ticker-dot"> · </span>
-    <span>Wax Cast · Lost Wax Process</span><span class="ticker-dot"> · </span>
-  </div>
-</div>
+<!-- ====================== 03 · EXPERIENCES ====================== -->
+<section class="section zone zone--paper" id="experiences">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="h2" data-es="Experiencias en el taller.">Experiences in the workshop.</h2>
+    </div>
 
-
-<!-- ═══════════════════════════════════════════════════════════════
-   ABOUT
-═══════════════════════════════════════════════════════════════ -->
-<section id="about">
-  <div class="about-text reveal">
-    <div class="section-label" id="about-label">01 — Atelier</div>
-    <h2 class="section-title" id="about-title">We are the contrast.</h2>
-    <div class="manifesto-pull" id="about-pull">
-      Between what this building was<br>and what it is now.
-    </div>
-    <p class="about-body" id="about-body1">
-      CONTRASTE ATELIER was built inside an old mechanic's workshop on the industrial edge of Tulum. Today, seven workshops share that space — metalwork, woodworking, laser engraving. We arrived to make jewelry. We stayed to make a point.
-    </p>
-    <p class="about-body" id="about-body2">
-      Not minimalism for its own sake. Not luxury for status. Intentional things, made by hand, in an unlikely place. Raw concrete. Silver. Fire. The contrast is the point.
-    </p>
-    <div class="workshop-badges">
-      <span class="badge">Metalwork</span>
-      <span class="badge">Woodworking</span>
-      <span class="badge">Laser Engraving</span>
-      <span class="badge">Ceramics ↗</span>
-    </div>
-  </div>
-
-  <!-- EDIT-IMAGE: Add a photo of the atelier here
-       <img src="assets/img/atelier.webp" alt="CONTRASTE Atelier" loading="lazy">
-  -->
-  <div class="about-image reveal">
-    <div class="about-image-label">Atelier · Tulum · MX</div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════════
-   ESPACIO — The physical space
-═══════════════════════════════════════════════════════════════ -->
-<section id="espacio">
-  <div class="espacio-header reveal">
-    <div class="espacio-header-text">
-      <div class="section-label" id="espacio-label">02 — The Space</div>
-      <h2 class="section-title" id="espacio-title">Built in a former workshop.</h2>
-      <p class="espacio-subtitle" id="espacio-sub">Seven crafts share one industrial building. Metalwork, carpentry, laser engraving, ceramics. We make jewelry. We fit right in.</p>
-    </div>
-    <a href="#contact" class="btn-outline">Visit us ↓</a>
-  </div>
-
-  <!-- EDIT-IMAGE: Replace each espacio-cell background with a real photo
-       <img src="assets/img/espacio-1.webp" alt="The space" loading="lazy">
-  -->
-  <div class="espacio-grid">
-    <div class="espacio-cell espacio-cell-1 espacio-cell--large reveal">
-      <div class="espacio-cell-label">The atelier floor</div>
-    </div>
-    <div class="espacio-cell espacio-cell-2 reveal">
-      <div class="espacio-cell-label">Tools</div>
-    </div>
-    <div class="espacio-cell espacio-cell-3 reveal">
-      <div class="espacio-cell-label">Workshop neighbors</div>
-    </div>
-    <div class="espacio-cell espacio-cell-4 reveal">
-      <div class="espacio-cell-label">Wax models</div>
-    </div>
-    <div class="espacio-cell espacio-cell-5 reveal">
-      <div class="espacio-cell-label">Silver inventory</div>
-    </div>
-  </div>
-
-  <div class="espacio-stats reveal-stagger">
-    <div class="espacio-stat">
-      <div class="espacio-stat-num">7</div>
-      <div class="espacio-stat-label">Workshops in the building</div>
-    </div>
-    <div class="espacio-stat">
-      <div class="espacio-stat-num">12+</div>
-      <div class="espacio-stat-label">Years of craft by Adrián</div>
-    </div>
-    <div class="espacio-stat">
-      <div class="espacio-stat-num">2h</div>
-      <div class="espacio-stat-label">Average class duration</div>
-    </div>
-    <div class="espacio-stat">
-      <div class="espacio-stat-num">100%</div>
-      <div class="espacio-stat-label">Handmade in Tulum</div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════════
-   SHOP — Products injected by JS from PRODUCTS array in main.js
-═══════════════════════════════════════════════════════════════ -->
-<section id="shop">
-  <div class="shop-header reveal">
-    <div>
-      <div class="section-label" id="shop-label">03 — Shop</div>
-      <h2 class="section-title" id="shop-title">The Collection.</h2>
-    </div>
-    <div class="shop-filters">
-      <button class="filter-btn active" data-filter="all"       id="fa">All</button>
-      <button class="filter-btn"        data-filter="rings"     id="fr">Rings</button>
-      <button class="filter-btn"        data-filter="necklaces" id="fn">Necklaces</button>
-      <button class="filter-btn"        data-filter="bracelets" id="fb">Bracelets</button>
-    </div>
-  </div>
-  <div class="product-grid reveal-stagger" id="productGrid"></div>
-  <div style="text-align:center;margin-top:2.5rem">
-    <a href="#" class="btn-primary" id="custom-cta">Custom order → WhatsApp</a>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════════
-   CLASSES — Cards injected by JS from CLASSES array
-═══════════════════════════════════════════════════════════════ -->
-<section id="classes">
-  <div class="classes-hero reveal">
-    <div class="section-label" id="classes-label">04 — Classes</div>
-    <h2 class="section-title" id="classes-title">Make your own ring.</h2>
-    <p class="about-body" id="classes-body" style="max-width:480px;color:rgba(26,24,21,.65)">
-      You choose a design from our collection of wax models. We cast it in silver — or the metal you want. No experience needed. You leave with a ring.
-    </p>
-    <div class="classes-grid reveal-stagger" id="classesGrid"></div>
-  </div>
-
-  <div class="wax-program reveal">
-    <div>
-      <div class="section-label">The Wax Program</div>
-      <h3 class="section-title" style="font-size:clamp(1.4rem,4vw,2.5rem)" id="wax-title">Choose a design.<br>Take your ring.</h3>
-      <div class="wax-steps">
-        <div class="wax-step">
-          <div class="wax-step-num">01</div>
-          <div class="wax-step-text"><strong>Choose a wax model</strong> from our collection of designs — all hand-carved in our atelier. Every design is unique.</div>
+    <div class="exp-grid reveal">
+      <!-- 01 -->
+      <article class="exp">
+        <div class="exp__top">
+          <span class="exp__num">Exp · 01</span>
+          <span class="exp__price" data-price>$1,250 <small>MXN</small></span>
         </div>
-        <div class="wax-step">
-          <div class="wax-step-num">02</div>
-          <div class="wax-step-text"><strong>Pick your metal</strong> — sterling silver, oxidized silver, gold-plated. Add a stone from our inventory if you want.</div>
+        <h3 class="exp__title" data-es="Modelado en cera">Wax Modeling</h3>
+        <p class="exp__desc" data-es="Una experiencia introductoria para modelar una pieza en cera dentro del taller — aprendiendo las herramientas y dando forma desde el material en bruto.">An introductory experience to model a piece in wax inside the workshop — learning the tools and shaping from the raw material.</p>
+        <div class="exp__meta">
+          <div class="inclist">
+            <span class="chip" data-es="Cera">Wax</span><span class="chip" data-es="Uso de estudio">Studio use</span><span class="chip" data-es="Herramientas de cera">Wax tools</span><span class="chip" data-es="Acompañamiento">Guidance</span>
+            <span class="chip chip--out" data-es="Fundición">Casting</span><span class="chip chip--out" data-es="Plata">Silver</span>
+          </div>
+          <a class="exp__cta" data-add data-id="wax" data-title="Wax Modeling" data-price="1250" role="button" tabindex="0" data-es="Agregar a la reservación <span class='exp__add-ic' aria-hidden='true'>+</span>">Add to reservation <span class="exp__add-ic" aria-hidden="true">+</span></a>
         </div>
-        <div class="wax-step">
-          <div class="wax-step-num">03</div>
-          <div class="wax-step-text"><strong>We cast it</strong> using the lost-wax process. Ready in 48–72 hours. Pickup or we ship anywhere in Mexico.</div>
+      </article>
+      <!-- 02 -->
+      <article class="exp">
+        <div class="exp__top">
+          <span class="exp__num">Exp · 02</span>
+          <span class="exp__price" data-price>$3,000 <small>MXN</small></span>
+        </div>
+        <h3 class="exp__title" data-es="De cera a metal <span class='italic' style='font-family:var(--serif)'>/ Cera perdida</span>">Wax to Metal <span class="italic" style="font-family:var(--serif)">/ Lost Wax</span></h3>
+        <p class="exp__desc" data-es="La experiencia completa: construye una pieza en cera y llévala hasta el metal — modelado, fundición y transformación.">The complete experience: build a piece from wax and carry it through to metal — modeling, casting and transformation.</p>
+        <div class="exp__meta">
+          <div class="inclist">
+            <span class="chip" data-es="Cera">Wax</span><span class="chip" data-es="Uso de estudio">Studio use</span><span class="chip" data-es="Herramientas">Tools</span><span class="chip" data-es="Acompañamiento">Guidance</span><span class="chip" data-es="Cera perdida">Lost-wax</span><span class="chip" data-es="Plata ≤ 9g*">Silver ≤ 9g*</span>
+          </div>
+          <p class="exp__note" data-es="*Plata incluida hasta 9g cuando aplica al formato. La plata excedente se cobra por separado al precio de mercado del día. Piezas complejas o acabados especiales se cotizan aparte.">*Silver included up to 9g when it applies to the format. Excess silver is charged separately at the day's market price. Complex pieces or special finishes are quoted apart.</p>
+          <a class="exp__cta" data-add data-id="lostwax" data-title="Wax to Metal / Lost Wax" data-price="3000" role="button" tabindex="0" data-es="Agregar a la reservación <span class='exp__add-ic' aria-hidden='true'>+</span>">Add to reservation <span class="exp__add-ic" aria-hidden="true">+</span></a>
+        </div>
+      </article>
+      <!-- 03 -->
+      <article class="exp">
+        <div class="exp__top">
+          <span class="exp__num">Exp · 03</span>
+          <span class="exp__price" data-price>$5,000 <small>MXN</small></span>
+        </div>
+        <h3 class="exp__title" data-es="Clase en pareja">Couples Class</h3>
+        <p class="exp__desc" data-es="Una experiencia para dos dentro del taller — para parejas, amigos o cualquiera que quiera compartir el proceso de crear una pieza desde cero.">A two-person experience inside the workshop — for partners, friends or anyone who wants to share the process of creating a piece from scratch.</p>
+        <div class="exp__meta">
+          <div class="inclist">
+            <span class="chip" data-es="Para dos">For two</span><span class="chip" data-es="Cera">Wax</span><span class="chip" data-es="Uso de estudio">Studio use</span><span class="chip" data-es="Herramientas">Tools</span><span class="chip" data-es="Acompañamiento">Guidance</span><span class="chip" data-es="Plata ≤ 9g*">Silver ≤ 9g*</span>
+          </div>
+          <p class="exp__note" data-es="*Plata incluida hasta 9g en total cuando aplica al formato. El excedente y las piezas más complejas se cotizan por separado.">*Silver included up to 9g total when it applies to the format. Excess and more complex pieces are quoted separately.</p>
+          <a class="exp__cta" data-add data-id="couples" data-title="Couples Class" data-price="5000" role="button" tabindex="0" data-es="Agregar a la reservación <span class='exp__add-ic' aria-hidden='true'>+</span>">Add to reservation <span class="exp__add-ic" aria-hidden="true">+</span></a>
+        </div>
+      </article>
+      <!-- 04 -->
+      <article class="exp">
+        <div class="exp__top">
+          <span class="exp__num">Exp · 04</span>
+          <span class="exp__price" data-price data-es="Desde $3,000 <small>MXN · sin metal</small>">From $3,000 <small>MXN · no metal</small></span>
+        </div>
+        <h3 class="exp__title" data-es="Uso de estudio y proyectos especiales">Studio Use &amp; Special Projects</h3>
+        <p class="exp__desc" data-es="Para trabajar proyectos específicos, desarrollar piezas a medida o usar el taller con acompañamiento. Definido por proceso, material y complejidad.">For working specific projects, developing custom pieces or using the workshop with guidance. Scoped by process, material and complexity.</p>
+        <div class="exp__meta">
+          <div class="inclist">
+            <span class="chip" data-es="Acceso a estudio">Studio access</span><span class="chip" data-es="Herramientas del taller">Workshop tools</span><span class="chip" data-es="Acompañamiento">Guidance</span><span class="chip" data-es="Proyecto a medida">Custom project</span>
+            <span class="chip chip--out" data-es="Metal">Metal</span><span class="chip chip--out" data-es="Materiales especiales">Special materials</span>
+          </div>
+          <a class="exp__cta" data-add data-id="studio" data-title="Studio Use &amp; Special Projects" data-price="3000" data-from="true" role="button" tabindex="0" data-es="Agregar a la reservación <span class='exp__add-ic' aria-hidden='true'>+</span>">Add to reservation <span class="exp__add-ic" aria-hidden="true">+</span></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 04 · PROCESS ====================== -->
+<section class="section zone zone--ink" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="h2" data-es="Antes de ser joyería, fue material, fuego y tiempo.">Before it was jewelry, it was material, fire and time.</h2>
+    </div>
+    <p class="lead proc-intro reveal muted" data-es="Cada pieza empieza en la mano: se modela, se ajusta, se transforma y toma forma dentro del taller. No solo te llevas un objeto — vives el proceso que lo construye.">Each piece starts in the hand: it's modeled, adjusted, transformed and takes shape inside the workshop. You don't just leave with an object — you live the process that builds it.</p>
+
+    <div class="proc reveal">
+      <article class="step"><span class="step__n">01</span><h3 class="step__t" data-es="Cera">Wax</h3><p class="step__d" data-es="Material en bruto sobre la mesa. El punto de partida de cada pieza.">Raw material on the bench. The starting point of every piece.</p><span class="step__ghost">✳</span></article>
+      <article class="step"><span class="step__n">02</span><h3 class="step__t" data-es="Modelado">Modeling</h3><p class="step__d" data-es="Dar forma a mano — tallar, construir y refinar la forma.">Shaping by hand — carving, building and refining the form.</p></article>
+      <article class="step"><span class="step__n">03</span><h3 class="step__t" data-es="Herramientas">Tools</h3><p class="step__d" data-es="Herramientas del taller, técnica y las marcas del proceso.">Workshop tools, technique and the marks of the process.</p></article>
+      <article class="step"><span class="step__n">04</span><h3 class="step__t" data-es="Fundición">Casting</h3><p class="step__d" data-es="Cera perdida: el fuego convierte la cera en metal. Transformación.">Lost-wax: fire turns wax into metal. Transformation.</p></article>
+      <article class="step"><span class="step__n">05</span><h3 class="step__t" data-es="Acabado">Finishing</h3><p class="step__d" data-es="Limado, textura y detalle. La mano de quien lo hace permanece visible.">Filing, texture and detail. The hand of the maker stays visible.</p></article>
+      <article class="step"><span class="step__n">06</span><h3 class="step__t" data-es="La pieza">The piece</h3><p class="step__d" data-es="Un objeto hecho desde cero — tuyo, construido en el taller.">An object made from scratch — yours, built in the workshop.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 05 · GALLERY ====================== -->
+<section class="section zone zone--ink" id="gallery" style="padding-top:0">
+  <div class="wrap">
+    <div class="gal reveal">
+      <figure class="media reveal reveal-media g1"><video class="media__v" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="uploads/IMG_5825_web.mp4" type="video/mp4"></video></figure>
+      <figure class="media reveal reveal-media g2" style="--md:.05s"><video class="media__v" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="uploads/IMG_5596_web.mp4" type="video/mp4"></video></figure>
+      <figure class="media reveal reveal-media g3" style="--md:.1s"><video class="media__v" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="uploads/IMG_5598_web.mp4" type="video/mp4"></video></figure>
+      <figure class="media reveal reveal-media g4" style="--md:.15s"><video class="media__v" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="uploads/IMG_5604_web.mp4" type="video/mp4"></video></figure>
+      <figure class="media reveal reveal-media g5" style="--md:.2s"><video class="media__v" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="uploads/IMG_5606_web.mp4" type="video/mp4"></video></figure>
+      <figure class="media reveal reveal-media g6" style="--md:.25s"><video class="media__v" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="uploads/IMG_5623_web.mp4" type="video/mp4"></video></figure>
+      <div class="gal__cap">
+        <span class="lead" style="font-family:var(--head)" data-es="Hecho a mano en el taller.">Built by hand in the workshop.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 06 · INSTAGRAM (band) ====================== -->
+<section class="section--tight zone zone--ink ig-band" id="instagram">
+  <div class="wrap ig-band__row reveal">
+    <div class="ig-band__l">
+      <span class="ig-kicker"><span class="ig-glyph"></span>Instagram</span>
+      <h3 class="ig-band__h"><a class="ig-handle" data-ig href="#">@contraste_atelier</a></h3>
+    </div>
+    <a class="btn btn--ghost btn--lg" data-ig href="#" data-es="Sigue el taller <span class='arrow'>→</span>">Follow the workshop <span class="arrow">→</span></a>
+  </div>
+</section>
+
+<!-- ====================== INSTAGRAM (removed grid) ====================== -->
+
+<!-- ====================== RESERVE ====================== -->
+<section class="section zone zone--paper reserve" id="reserve">
+  <div class="wrap">
+    <div class="reserve__head reveal">
+      <span class="kicker"><span class="dot"></span><span data-es="Reservar">Reserve</span></span>
+      <h2 class="h2" data-es="No necesitas experiencia.<br>Solo elige una fecha.">You don't need experience.<br>Just pick a date.</h2>
+      <p class="muted reserve__sub" data-es="Para principiantes, curiosos, parejas y viajeros. Elige un día y una hora publicados — cada reservación se confirma a mano.">For beginners, the curious, couples and travelers alike. Choose a published day and time — every reservation is confirmed by hand.</p>
+      <button class="btn btn--lg reserve__toggle" id="reserveToggle" aria-expanded="false" aria-controls="reservePanel">
+        <span class="reserve__toggle-t" data-es="Reservar tu taller">Reserve your workshop</span>
+        <span class="reserve__toggle-ic" aria-hidden="true">+</span>
+      </button>
+    </div>
+
+    <div class="reserve__panel" id="reservePanel">
+      <div class="reserve__panel-in">
+        <div class="booking">
+          <div class="booking__pick">
+            <div class="booking__col">
+              <span class="booking__label" data-es="01 · Elige un día">01 · Choose a day</span>
+              <div class="booking__dates" id="bookingDates"></div>
+            </div>
+            <div class="booking__col">
+              <span class="booking__label" data-es="02 · Elige una hora">02 · Choose a time</span>
+              <div class="booking__times" id="bookingTimes"><span class="booking__hint">Select a day first.</span></div>
+            </div>
+          </div>
+          <div class="booking__bar">
+            <div class="booking__selwrap">
+              <span class="booking__sel-k" data-es="Seleccionado">Selected</span>
+              <span class="booking__sel" id="bookingSel">No date selected yet</span>
+            </div>
+            <button class="btn btn--lg" id="bookingGo" disabled><span data-es="Agregar a la reservación">Add to reservation</span> <span class="arrow">→</span></button>
+          </div>
+          <ul class="reserve__facts">
+            <li><span class="k" data-es="Dónde">Where</span> La Veleta, Tulum</li>
+            <li><span class="k" data-es="Nivel">Level</span> <span data-es="Sin experiencia previa">No experience needed</span></li>
+            <li><span class="k" data-es="Grupo">Group</span> <span data-es="Privado o hasta 4">Private or up to 4</span></li>
+          </ul>
         </div>
       </div>
     </div>
-    <div class="wax-cta">
-      <div class="wax-cta-title" id="wax-cta-title">The design is already done.<br>The price reflects that.</div>
-      <p class="wax-cta-body" id="wax-cta-body">Because you're choosing from existing wax models rather than commissioning a custom design from scratch, you pay significantly less — while still getting a one-of-one cast piece in real silver.</p>
-      <a href="#booking" class="btn-primary" id="wax-book">Book a session →</a>
-    </div>
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════════════════════
-   STONES — Current stone inventory
-═══════════════════════════════════════════════════════════════ -->
-<section id="stones">
-  <div class="reveal">
-    <div class="section-label" id="stones-label">05 — Stones</div>
-    <h2 class="section-title" id="stones-title">Current inventory.</h2>
-    <p class="about-body" id="stones-body" style="max-width:500px">
-      Semi and precious stones available for custom orders and class sessions. Stock changes. DM to confirm availability before ordering.
-    </p>
-  </div>
-  <div class="stones-grid reveal-stagger">
-    <div class="stone-card">
-      <div class="stone-swatch s-labradorite"></div>
-      <div class="stone-name">Labradorite</div>
-      <div class="stone-origin">Madagascar</div>
-      <div class="stone-avail in">● In stock</div>
+<!-- ====================== SHOP ====================== -->
+<section class="section--tight zone zone--ink">
+  <div class="wrap shop reveal">
+    <div class="shop__l">
+      <span class="shop__soon" data-es="Tienda en línea · Próximamente">Online shop · Coming soon</span>
+      <h3 data-es="Piezas del taller, pronto disponibles para llevar.">Workshop pieces, soon available to take home.</h3>
     </div>
-    <div class="stone-card">
-      <div class="stone-swatch s-turquoise"></div>
-      <div class="stone-name">Turquoise</div>
-      <div class="stone-origin">Mexico</div>
-      <div class="stone-avail in">● In stock</div>
-    </div>
-    <div class="stone-card">
-      <div class="stone-swatch s-obsidian"></div>
-      <div class="stone-name">Obsidian</div>
-      <div class="stone-origin">Mexico</div>
-      <div class="stone-avail in">● In stock</div>
-    </div>
-    <div class="stone-card">
-      <div class="stone-swatch s-amethyst"></div>
-      <div class="stone-name">Amethyst</div>
-      <div class="stone-origin">Brazil</div>
-      <div class="stone-avail low">● Few left</div>
-    </div>
-    <div class="stone-card">
-      <div class="stone-swatch s-opal"></div>
-      <div class="stone-name">Fire Opal</div>
-      <div class="stone-origin">Mexico</div>
-      <div class="stone-avail low">● Few left</div>
-    </div>
-    <div class="stone-card">
-      <div class="stone-swatch s-pyrite"></div>
-      <div class="stone-name">Pyrite</div>
-      <div class="stone-origin">Peru</div>
-      <div class="stone-avail in">● In stock</div>
-    </div>
-    <div class="stone-card">
-      <div class="stone-swatch s-moonstone"></div>
-      <div class="stone-name">Moonstone</div>
-      <div class="stone-origin">Sri Lanka</div>
-      <div class="stone-avail in">● In stock</div>
-    </div>
-    <div class="stone-card">
-      <div class="stone-swatch s-garnet"></div>
-      <div class="stone-name">Garnet</div>
-      <div class="stone-origin">India</div>
-      <div class="stone-avail in">● In stock</div>
-    </div>
-  </div>
-  <div style="margin-top:2rem">
-    <a href="#" class="btn-primary" id="stones-cta">Inquire about stones → WhatsApp</a>
+    <span class="shop__tag" data-es="Lanzamiento 2026">Launching 2026</span>
   </div>
 </section>
 
+</main>
 
-<!-- ═══════════════════════════════════════════════════════════════
-   COLABORADORES — Brand ecosystem (injected by JS from COLABORADORES array)
-═══════════════════════════════════════════════════════════════ -->
-<section id="colaboradores">
-  <div class="colab-header reveal">
-    <div class="section-label" id="colab-label">06 — Ecosystem</div>
-    <h2 class="section-title" id="colab-title">The brands in the room.</h2>
-    <p class="colab-intro" id="colab-intro">CONTRASTE is not a solo project. These are the people and brands that share this space — physically and creatively.</p>
-  </div>
-  <div class="colab-grid reveal-stagger" id="colabGrid">
-    <!-- Injected by JS from COLABORADORES array in main.js -->
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════════
-   INSTAGRAM — 3 profiles with tab switcher
-═══════════════════════════════════════════════════════════════ -->
-<section id="instagram">
-  <div class="ig-header reveal">
-    <div>
-      <div class="section-label" id="ig-label">07 — Follow</div>
-      <h2 class="section-title" id="ig-title">The feeds.</h2>
-    </div>
-    <div class="ig-tabs">
-      <button class="ig-tab active" data-target="ig-contraste">CONTRASTE</button>
-      <button class="ig-tab"        data-target="ig-sunset">SUNSET SEEKER</button>
-      <button class="ig-tab"        data-target="ig-adrian">A.MORELAFUENTE</button>
-    </div>
-  </div>
-
-  <!-- Profile: CONTRASTE -->
-  <div class="ig-profile active" id="ig-contraste">
-    <div class="ig-profile-header">
-      <div class="ig-avatar"></div>
-      <div>
-        <div class="ig-handle"></div>
-        <div class="ig-bio"></div>
+<!-- ====================== FOOTER ====================== -->
+<footer class="foot zone zone--ink">
+  <div class="wrap">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <img src="assets/star-cream.png" alt="Contraste Atelier">
+        <div class="wm">Contraste</div>
+        <p data-es="Taller de joyería y estudio creativo. Taller real, proceso artesanal, cera perdida, plata y la experiencia humana de crear.">Jewelry Workshop &amp; Creative Studio. Real workshop, artisanal process, lost wax, silver and the human experience of making.</p>
+      </div>
+      <div class="foot__col">
+        <h4 data-es="Visita">Visit</h4>
+        <ul>
+          <li><a>La Veleta, Tulum</a></li>
+          <li><a>Quintana Roo, México</a></li>
+          <li><span class="label" style="margin-top:6px" data-es="Solo con reservación">By reservation only</span></li>
+        </ul>
+      </div>
+      <div class="foot__col">
+        <h4 data-es="Conecta">Connect</h4>
+        <ul>
+          <li><a data-ig href="#">Instagram · @contraste_atelier →</a></li>
+          <li><a href="#reserve" data-es="Reservar una fecha →">Reserve a date →</a></li>
+          <li><a href="#experiences" data-es="Ver experiencias →">See experiences →</a></li>
+        </ul>
       </div>
     </div>
-    <!-- EDIT-IMAGE: Replace ig-post backgrounds in CSS or use renderInstagram() in main.js -->
-    <div class="ig-grid"></div>
-    <div class="ig-footer">
-      <a href="#" class="btn-outline ig-follow-link" target="_blank" rel="noopener">Follow on Instagram ↗</a>
+    <div class="foot__bottom">
+      <span>© 2026 Contraste Atelier ®</span>
+      <span>La Veleta · Tulum · México</span>
     </div>
-  </div>
-
-  <!-- Profile: Sunset Seeker -->
-  <div class="ig-profile" id="ig-sunset">
-    <div class="ig-profile-header">
-      <div class="ig-avatar"></div>
-      <div>
-        <div class="ig-handle"></div>
-        <div class="ig-bio"></div>
-      </div>
-    </div>
-    <div class="ig-grid"></div>
-    <div class="ig-footer">
-      <a href="#" class="btn-outline ig-follow-link" target="_blank" rel="noopener">Follow on Instagram ↗</a>
-    </div>
-  </div>
-
-  <!-- Profile: Adrián -->
-  <div class="ig-profile" id="ig-adrian">
-    <div class="ig-profile-header">
-      <div class="ig-avatar"></div>
-      <div>
-        <div class="ig-handle"></div>
-        <div class="ig-bio"></div>
-      </div>
-    </div>
-    <div class="ig-grid"></div>
-    <div class="ig-footer">
-      <a href="#" class="btn-outline ig-follow-link" target="_blank" rel="noopener">Follow on Instagram ↗</a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════════
-   BOOKING FORM
-═══════════════════════════════════════════════════════════════ -->
-<section id="booking">
-  <div class="booking-grid">
-    <div class="booking-info reveal">
-      <div class="section-label" id="booking-label">08 — Book a Class</div>
-      <h2 id="booking-title">Reserve your<br>session.</h2>
-      <p id="booking-body">We confirm within 24 hours via WhatsApp. A 30% deposit is required to hold the spot. Full payment on the day.</p>
-      <div class="booking-format-list" id="bookingFormatList">
-        <!-- Injected by JS from CLASSES array -->
-      </div>
-    </div>
-    <div class="reveal">
-      <div class="booking-form" id="bookingFormWrap">
-        <div class="form-title" id="form-title">Book a session.</div>
-        <form id="bookingForm" onsubmit="submitBooking(event)">
-          <div class="form-row">
-            <div class="form-field">
-              <label id="fl-name">Name</label>
-              <input type="text" required placeholder="Your name" id="fi-name" autocomplete="given-name">
-            </div>
-            <div class="form-field">
-              <label id="fl-email">Email</label>
-              <input type="email" required placeholder="your@email.com" id="fi-email" autocomplete="email">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-field">
-              <label id="fl-phone">WhatsApp</label>
-              <input type="tel" required placeholder="+52 984..." id="fi-phone" autocomplete="tel">
-            </div>
-            <div class="form-field">
-              <label id="fl-class">Format</label>
-              <select required id="fi-class">
-                <option value="" disabled selected>Choose format</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-field">
-              <label id="fl-date">Preferred date</label>
-              <input type="date" required id="fi-date">
-            </div>
-            <div class="form-field">
-              <label id="fl-people">People</label>
-              <select id="fi-people">
-                <option>1</option><option>2</option><option>3</option>
-                <option>4</option><option>5</option><option>6</option><option>6+</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-field">
-            <label id="fl-notes">Notes (optional)</label>
-            <textarea placeholder="Any questions, preferences, or special requests..." id="fi-notes"></textarea>
-          </div>
-          <button type="submit" class="form-submit" id="fi-submit">Send booking request</button>
-          <p class="form-note" id="form-note">We'll confirm via WhatsApp within 24 hours. A 30% deposit holds your spot.</p>
-        </form>
-      </div>
-      <div id="form-success">
-        <div class="check">✓</div>
-        <h3 id="success-title">Request sent.</h3>
-        <p id="success-body">We'll reach out to confirm your session within 24 hours. Check your WhatsApp.</p>
-        <a id="success-wa" href="#" class="btn-primary" style="display:inline-block;margin-top:1.5rem" target="_blank">Follow up on WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════════
-   CONTACTO
-═══════════════════════════════════════════════════════════════ -->
-<section id="contact">
-  <div class="section-label reveal" id="contact-label">09 — Contact</div>
-  <h2 class="section-title reveal" id="contact-title" style="max-width:500px">Come find us.</h2>
-  <div class="contact-grid reveal">
-    <div class="contact-block">
-      <div class="contact-type">WhatsApp · Primary</div>
-      <div class="contact-action">Message us directly.</div>
-      <div class="contact-detail">Classes · Custom orders · Questions<br>Response within a few hours.</div>
-      <a href="#" class="contact-link wa" id="contact-wa-link" target="_blank" rel="noopener">↗ Open WhatsApp</a>
-    </div>
-    <div class="contact-block">
-      <div class="contact-type">Instagram</div>
-      <div class="contact-action" id="contact-ig-handle">@contraste.tulum</div>
-      <div class="contact-detail">Follow the process.<br>DMs open for inquiries.</div>
-      <a href="#" class="contact-link" id="contact-ig-link" target="_blank" rel="noopener">↗ Instagram</a>
-    </div>
-    <div class="contact-block">
-      <div class="contact-type">Location</div>
-      <div class="contact-action">Tulum, Mexico.</div>
-      <div class="contact-detail">Industrial zone, former mechanic's workshop.<br>Exact address shared on booking confirmation.</div>
-      <a href="#" class="contact-link" id="contact-maps-link" target="_blank" rel="noopener">↗ Google Maps</a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════════════════════ -->
-<footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <img src="assets/img/wordmark-crema.png" alt="CONTRASTE ATELIER" style="height:clamp(1.3rem,3.5vw,2rem);display:block;margin-bottom:.75rem;opacity:.9">
-      <p id="footer-tagline">A jewelry atelier inside a former mechanic's workshop. Tulum, Mexico. Est. 2026.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Atelier</h4>
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#espacio">The Space</a></li>
-        <li><a href="#colaboradores">Collabs</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Shop &amp; Classes</h4>
-      <ul>
-        <li><a href="#shop">Jewelry</a></li>
-        <li><a href="#stones">Stones</a></li>
-        <li><a href="#classes">Classes</a></li>
-        <li><a href="#booking">Book a session</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Ecosystem</h4>
-      <ul>
-        <li><a href="https://instagram.com/sunsetseekker" target="_blank" rel="noopener">Sunset Seeker ↗</a></li>
-        <li><a href="https://instagram.com/a.morelafuente" target="_blank" rel="noopener">@a.morelafuente ↗</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span class="footer-legal">© 2026 CONTRASTE ATELIER · Tulum, Mexico · All rights reserved</span>
-    <a href="https://instagram.com/contraste.tulum" class="footer-ig" id="footer-ig-link" target="_blank" rel="noopener">@contraste.tulum ↗</a>
   </div>
 </footer>
 
-
-<!-- ═══════════════════════════════════════════════════════════════
-   CART DRAWER
-═══════════════════════════════════════════════════════════════ -->
-<div id="cart-overlay" onclick="toggleCart()"></div>
-<div id="cart-drawer" role="dialog" aria-label="Shopping cart">
-  <div class="cart-header">
-    <h3>Cart (<span id="cartHeaderCount">0</span>)</h3>
-    <button class="cart-close" onclick="toggleCart()" aria-label="Close cart">✕</button>
+<!-- ====================== RESERVATION CART ====================== -->
+<div class="cart-backdrop" id="cartBackdrop" hidden></div>
+<aside class="cart" id="cart" aria-hidden="true" aria-label="Your reservation">
+  <div class="cart__head">
+    <span class="cart__title" data-es="Tu reservación">Your reservation</span>
+    <button class="cart__close" id="cartClose" aria-label="Close">&#10005;</button>
   </div>
-  <div id="cart-items">
-    <div class="cart-empty" id="cartEmpty">
-      Your cart is empty.<br>
-      <a href="#shop" onclick="toggleCart()" style="opacity:.6;text-decoration:underline;text-underline-offset:3px">Browse the collection →</a>
+
+  <div class="cart__slot" id="cartSlot" hidden>
+    <div><span class="cart__slot-k" data-es="Fecha y hora">Date &amp; time</span><span class="cart__slot-val"></span></div>
+    <button type="button" class="cart__slot-ch" id="cartSlotChange" data-es="Cambiar">Change</button>
+  </div>
+
+  <!-- step 1 · selected experiences -->
+  <div class="cart__step" data-step="items" id="cartItems">
+    <div class="cart__empty" id="cartEmpty">
+      <p class="cart__empty-t" data-es="Aún no has agregado nada.">Nothing added yet.</p>
+      <p class="muted" data-es="Agrega experiencias de la lista de arriba, o solo reserva una fecha — ambas llegan en un solo mensaje.">Add experiences from the list above, or just reserve a date — both arrive in one message.</p>
+    </div>
+    <div class="cart__list" id="cartList"></div>
+    <div class="cart__foot" id="cartFoot">
+      <div class="cart__sum"><span data-es="Total estimado">Estimated total</span><span id="cartTotal">$0 MXN</span></div>
+      <button class="btn btn--lg cart__next" id="cartNext" data-es="Continuar <span class='arrow'>→</span>">Continue <span class="arrow">→</span></button>
     </div>
   </div>
-  <div class="cart-footer" id="cartFooter" style="display:none">
-    <div class="cart-total">
-      <span>Total</span><span id="cartTotal">MXN 0</span>
+
+  <!-- step 2 · details -->
+  <form class="cart__step cart__form" data-step="form" id="cartForm" hidden>
+    <button type="button" class="cart__back" id="cartBack" data-es="← Volver a experiencias">← Back to experiences</button>
+    <label class="fld"><span data-es="Nombre">Name</span><input name="name" autocomplete="name" required></label>
+    <label class="fld"><span data-es="WhatsApp / teléfono">WhatsApp / phone</span><input name="phone" inputmode="tel" autocomplete="tel"></label>
+    <label class="fld"><span data-es="Correo">Email</span><input name="email" type="email" autocomplete="email"></label>
+    <label class="fld"><span data-es="Personas">People</span><input name="people" type="number" min="1" value="1"></label>
+    <label class="fld"><span data-es="Notas (opcional)">Notes (optional)</span><textarea name="notes" rows="2"></textarea></label>
+    <div class="cart__send">
+      <button type="submit" class="btn btn--lg" id="cartSend" data-es="Enviar por WhatsApp <span class='arrow'>→</span>">Send via WhatsApp <span class="arrow">→</span></button>
+      <button type="button" class="cart__email link-underline" id="cartEmail" data-es="o enviar por correo →">or send by email →</button>
     </div>
-    <a href="#" class="cart-checkout" id="cartCheckoutBtn" target="_blank" rel="noopener">Checkout via WhatsApp</a>
-    <div class="cart-wa">We'll confirm availability and payment details</div>
-  </div>
-</div>
+    <p class="cart__fine" data-es="Confirmamos fechas y disponibilidad manualmente. Al enviar se abre WhatsApp con tu reservación lista — solo presiona enviar.">We confirm dates and availability manually. Sending opens WhatsApp with your reservation summary ready — just press send.</p>
+  </form>
+</aside>
 
-<div id="toast" role="status" aria-live="polite"></div>
-
-<!-- Scripts -->
-<script src="js/main.js"></script>
+<script src="assets/i18n.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/cart.js"></script>
 </body>
 </html>
