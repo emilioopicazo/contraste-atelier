@@ -565,6 +565,18 @@ html.loaded .preloader{opacity:0; visibility:hidden; pointer-events:none}
 }
 .cart-count[data-empty="true"]{display:none}
 
+/* tighten the header on narrow phones so the brand mark, language
+   toggle and reserve button don't collide or push off the right edge */
+@media (max-width:400px){
+  .head{padding-inline:14px}
+  .brand{gap:7px}
+  .brand img{height:24px}
+  .brand .wm{font-size:12px; letter-spacing:.14em}
+  .head__right{gap:10px}
+  .lang-toggle{font-size:10px; gap:4px}
+  .cart-btn{padding:.65em .8em; font-size:11px; gap:6px}
+}
+
 /* ====================================================
    STATS / TRUST BAR
    ==================================================== */

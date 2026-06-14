@@ -32,21 +32,46 @@
     el.setAttribute('rel', 'noopener');
   });
 
-  // ----- videos: play only while in view (perf + battery) -----
+  // ----- videos: autoplay reliably, then play only while in view (perf + battery) -----
   var vids = document.querySelectorAll('video');
-  function tryPlay(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  function tryPlay(v) {
+    // re-assert these as JS properties — some mobile browsers ignore the
+    // HTML attributes alone and silently block playback otherwise
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {
+      // not enough data yet, or autoplay still blocked — retry once ready
+      v.addEventListener('loadeddata', function () { tryPlay(v); }, { once: true });
+    });
+  }
   if (vids.length) {
+    vids.forEach(function (v) {
+      v.muted = true;
+      v.defaultMuted = true;
+      v.playsInline = true;
+      tryPlay(v);
+    });
+
     if ('IntersectionObserver' in window) {
       var vio = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
           if (en.isIntersecting) tryPlay(en.target);
           else en.target.pause();
         });
-      }, { threshold: 0.2 });
+      }, { threshold: 0.01, rootMargin: '200px 0px' });
       vids.forEach(function (v) { vio.observe(v); });
     }
-    // fallback: kick off any video already on screen
-    vids.forEach(function (v) { if (inView(v)) tryPlay(v); });
+
+    // some mobile browsers only allow play() once the user has interacted
+    // with the page — resume any still-paused, in-view videos on first touch
+    var resumeVideos = function () {
+      vids.forEach(function (v) { if (v.paused && inView(v)) tryPlay(v); });
+    };
+    ['touchstart', 'click', 'scroll', 'keydown'].forEach(function (evt) {
+      document.addEventListener(evt, resumeVideos, { passive: true, once: true });
+    });
   }
 
   // ----- sticky header state -----
