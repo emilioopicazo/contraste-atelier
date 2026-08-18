@@ -57,5 +57,9 @@ export function workshopPriceMXN(): number | null {
 }
 
 export function formatMXN(amount: number): string {
-  return `$${amount.toLocaleString("en-US")} MXN`;
+  const hasCents = Math.round(amount * 100) % 100 !== 0;
+  return `$${amount.toLocaleString("en-US", {
+    minimumFractionDigits: hasCents ? 2 : 0,
+    maximumFractionDigits: 2,
+  })} MXN`;
 }

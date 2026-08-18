@@ -134,12 +134,16 @@ as $$
     session_effective_capacity(s) as effective_capacity
   from workshop_sessions s
   where s.status = 'open'
-    and s.ends_at > now()
+    and s.starts_at > now() -- in-progress sessions are not bookable, so never advertised
   order by s.starts_at asc;
 $$;
 
 revoke all on function get_public_sessions() from public;
 grant execute on function get_public_sessions() to anon, authenticated, service_role;
+
+-- Internal helpers must not be reachable through PostgREST rpc.
+revoke all on function session_confirmed_seats(uuid) from public, anon, authenticated;
+revoke all on function session_effective_capacity(workshop_sessions) from public, anon, authenticated;
 
 -- ── Realtime availability broadcast ─────────────────────────
 -- Sends the recomputed public state of one session on the
@@ -175,6 +179,12 @@ begin
     null; -- realtime not installed (tests / local pg)
   end;
 end $$;
+
+-- SECURITY DEFINER + default PUBLIC execute would let anon bypass the public
+-- projection (broadcast blocked/past session state) and flood the realtime
+-- topic. Internal only: triggers and RPCs run as the function owner.
+revoke all on function broadcast_session_availability(uuid) from public, anon, authenticated;
+grant execute on function broadcast_session_availability(uuid) to service_role;
 
 create or replace function bookings_broadcast_trigger()
 returns trigger
@@ -243,6 +253,8 @@ begin
   end loop;
   return v_ref;
 end $$;
+
+revoke all on function generate_booking_reference(timestamptz) from public, anon, authenticated;
 
 -- ── create_booking: atomic, idempotent, overbooking-proof ───
 -- Custom SQLSTATEs consumed by the app layer:
@@ -317,6 +329,25 @@ begin
   end if;
   if v_session.starts_at <= now() then
     raise exception 'session already started' using errcode = 'CA004';
+  end if;
+
+  -- Re-check idempotency under the lock: an identical concurrent retry may
+  -- have committed while we waited, and must get its booking back — not a
+  -- spurious sold-out that pushes the customer into double-booking.
+  select * into v_existing from workshop_bookings
+    where idempotency_key = p_idempotency_key;
+  if found then
+    return jsonb_build_object(
+      'id', v_existing.id,
+      'booking_reference', v_existing.booking_reference,
+      'session_id', v_existing.session_id,
+      'starts_at', v_session.starts_at,
+      'ends_at', v_session.ends_at,
+      'party_size', v_existing.party_size,
+      'metal_preference', v_existing.metal_preference,
+      'remaining_seats', greatest(0, session_effective_capacity(v_session) - session_confirmed_seats(v_session.id)),
+      'duplicate', true
+    );
   end if;
 
   v_capacity := session_effective_capacity(v_session);
@@ -439,6 +470,9 @@ begin
   end if;
   if v_target.status <> 'open' then
     raise exception 'target session not open' using errcode = 'CA003';
+  end if;
+  if v_target.starts_at <= now() then
+    raise exception 'target session already started' using errcode = 'CA004';
   end if;
 
   v_capacity := session_effective_capacity(v_target);

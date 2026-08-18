@@ -20,6 +20,29 @@ export function CartDrawer({ dict }: { dict: Dictionary["shop"] }) {
     }
   }, [open]);
 
+  // Keep keyboard focus inside the dialog while it's open (aria-modal).
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== "Tab") return;
+    const root = panelRef.current;
+    if (!root) return;
+    const focusables = Array.from(
+      root.querySelectorAll<HTMLElement>(
+        'button, a[href], select, input, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => !el.hasAttribute("disabled"));
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey && (active === first || active === root)) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && active === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+
   if (!enabled) return null;
   const lines = cart?.lines ?? [];
 
@@ -37,11 +60,13 @@ export function CartDrawer({ dict }: { dict: Dictionary["shop"] }) {
         aria-modal="true"
         aria-label={dict.cart}
         aria-hidden={!open}
+        inert={!open}
         tabIndex={-1}
+        onKeyDown={onKeyDown}
       >
         <div className="cartd__head">
           <span className="cartd__title">{dict.cart}</span>
-          <button type="button" className="cartd__close" onClick={closeCart} aria-label="Close">
+          <button type="button" className="cartd__close" onClick={closeCart} aria-label={dict.close}>
             ✕
           </button>
         </div>
@@ -102,7 +127,11 @@ export function CartDrawer({ dict }: { dict: Dictionary["shop"] }) {
           )}
         </div>
         <div className="cartd__foot">
-          {error && <p className="cartd__err">{error === "network" ? "Network error — try again." : "Something changed in the store — refresh and retry."}</p>}
+          {error && (
+            <p className="cartd__err">
+              {error === "network" ? dict.errNetwork : dict.errStore}
+            </p>
+          )}
           <div className="cartd__sum">
             <span className="k">{dict.subtotal}</span>
             <span className="v">

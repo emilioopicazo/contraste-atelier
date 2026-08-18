@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
           if (error.code === "CA001") {
             return NextResponse.json({ error: "target_full" }, { status: 409 });
           }
-          if (error.code === "CA003") {
+          if (error.code === "CA003" || error.code === "CA004") {
             return NextResponse.json({ error: "target_unavailable" }, { status: 409 });
           }
           throw error;

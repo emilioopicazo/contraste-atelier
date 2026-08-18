@@ -19,7 +19,7 @@ export function VariantPanel({
   dict: Dictionary["shop"];
   onImageChange?: (url: string | null) => void;
 }) {
-  const { add, busy, enabled } = useCart();
+  const { add, busy, enabled, error } = useCart();
   const hasOptions =
     product.options.length > 0 &&
     !(product.options.length === 1 && product.options[0].values.length === 1);
@@ -31,6 +31,7 @@ export function VariantPanel({
     return out;
   });
   const [added, setAdded] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const selected: ProductVariant | undefined = useMemo(
     () =>
@@ -63,16 +64,20 @@ export function VariantPanel({
 
   const onAdd = async () => {
     if (!selected) return;
-    track("add_to_cart", {
-      item_id: product.handle,
-      variant: selected.title,
-      value: Number(selected.price.amount),
-      currency: selected.price.currencyCode,
-    });
+    setFailed(false);
     const ok = await add(selected.id, 1);
     if (ok) {
+      // Fired only on real success so analytics never counts failed adds.
+      track("add_to_cart", {
+        item_id: product.handle,
+        variant: selected.title,
+        value: Number(selected.price.amount),
+        currency: selected.price.currencyCode,
+      });
       setAdded(true);
       window.setTimeout(() => setAdded(false), 1600);
+    } else {
+      setFailed(true);
     }
   };
 
@@ -121,6 +126,11 @@ export function VariantPanel({
                 ? "✓"
                 : dict.addToCart}
         </button>
+        {failed && (
+          <p className="fld__err" role="alert">
+            {error === "network" ? dict.errNetwork : dict.errStore}
+          </p>
+        )}
       </div>
     </div>
   );

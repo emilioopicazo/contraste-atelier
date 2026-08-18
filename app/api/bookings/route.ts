@@ -26,8 +26,11 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  // Rightmost x-forwarded-for entry: appended by the nearest trusted proxy,
+  // so a client-supplied prefix can't rotate the limiter bucket.
+  const fwd = req.headers.get("x-forwarded-for");
   const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    (fwd && fwd.split(",").map((s) => s.trim()).filter(Boolean).pop()) ||
     req.headers.get("x-real-ip") ||
     "unknown";
   if (!rateLimit(`bookings:${ip}`, 8, 60_000)) {

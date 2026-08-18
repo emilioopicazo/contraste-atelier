@@ -40,17 +40,22 @@ interface BookingResult {
   duplicate: boolean;
 }
 
+let sessionSeq = 0;
 async function createSession(opts: {
   daysFromNow?: number;
   status?: string;
 }): Promise<string> {
   const days = opts.daysFromNow ?? 7;
+  // Distinct minute offset per session: consecutive inserts within the same
+  // microsecond would otherwise collide on the (workshop_type, starts_at)
+  // unique index.
+  sessionSeq += 1;
   const rows = await sql<{ id: string }>(
     `insert into workshop_sessions (workshop_type, starts_at, ends_at, status)
-     values ('wax_ring', now() + make_interval(days => $1),
-             now() + make_interval(days => $1, hours => 3), $2)
+     values ('wax_ring', now() + make_interval(days => $1, mins => $3),
+             now() + make_interval(days => $1, mins => $3, hours => 3), $2)
      returning id`,
-    [days, opts.status ?? "open"]
+    [days, opts.status ?? "open", sessionSeq]
   );
   return rows[0].id;
 }
@@ -170,6 +175,32 @@ describe("create_booking — capacity and overbooking", () => {
     expect(await available(s)).toBe(2);
   });
 
+  it("identical retry against a now-full session returns the winner, not sold-out", async () => {
+    const s = await createSession({});
+    await book(s, 3);
+    const winner = await book(s, 1, "retry-under-lock-key");
+    // The transport retries the same request after the session filled up.
+    seq -= 1;
+    const retry = await book(s, 1, "retry-under-lock-key");
+    expect(retry.duplicate).toBe(true);
+    expect(retry.booking_reference).toBe(winner.booking_reference);
+    const confirmed = await sql<{ n: number }>(
+      `select coalesce(sum(party_size),0)::int as n from workshop_bookings
+       where session_id = $1 and status = 'confirmed'`,
+      [s]
+    );
+    expect(confirmed[0].n).toBe(4); // no extra seat consumed, no CA002
+  });
+
+  it("in-progress sessions are hidden from the public projection", async () => {
+    const rows = await sql<{ id: string }>(
+      `insert into workshop_sessions (workshop_type, starts_at, ends_at, status)
+       values ('wax_ring', now() - interval '1 hour', now() + interval '2 hours', 'open')
+       returning id`
+    );
+    expect(await available(rows[0].id)).toBe(-1); // absent: not bookable, not advertised
+  });
+
   it("rejects blocked and past sessions", async () => {
     const blocked = await createSession({ status: "blocked" });
     await expectSqlState(book(blocked, 1), "CA003");
@@ -243,6 +274,13 @@ describe("cancel and move", () => {
     await sql(`select move_booking($1, $2)`, [b.id, target]);
     expect(await available(from)).toBe(4);
     expect(await available(target)).toBe(2);
+  });
+
+  it("refuses to move a booking onto a session that already started", async () => {
+    const from = await createSession({});
+    const b = await book(from, 1);
+    const past = await createSession({ daysFromNow: -1 });
+    await expectSqlState(sql(`select move_booking($1, $2)`, [b.id, past]), "CA004");
   });
 });
 
