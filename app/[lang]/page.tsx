@@ -76,19 +76,6 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* ── stats / trust bar ── */}
-      <section className="stats zone zone--ink" aria-label="The workshop at a glance">
-        <div className="wrap stats__grid">
-          {dict.stats.map((s, i) => (
-            <div className="stat reveal" data-d={i || undefined} key={s.l}>
-              <span className="stat__n">{s.n}</span>
-              <span className="stat__l">{s.l}</span>
-              <span className="stat__s">{s.s}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── 02 · ATELIER / ABOUT ── */}
       <section className="section zone zone--ink" id="about">
         <div className="wrap">

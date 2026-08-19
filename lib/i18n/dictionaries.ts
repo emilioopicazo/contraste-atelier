@@ -33,12 +33,6 @@ const en = {
     ctaWorkshop: "Book a workshop",
     ctaShop: "Shop the collection",
   },
-  stats: [
-    { n: "MON + THU", l: "Workshop days", s: "New sessions each week" },
-    { n: "5–8 PM", l: "One evening", s: "3-hour session · America/Cancun" },
-    { n: "4", l: "People per session", s: "Small group format" },
-    { n: "BRASS", l: "Casting included", s: "Silver & gold quoted separately" },
-  ],
   about: {
     heading: "Not a class. An entrance to the workshop.",
     tag: "La Veleta · Tulum",
@@ -250,12 +244,6 @@ const es: Dictionary = {
     ctaWorkshop: "Reserva un taller",
     ctaShop: "Compra la colección",
   },
-  stats: [
-    { n: "LUN + JUE", l: "Días de taller", s: "Sesiones nuevas cada semana" },
-    { n: "5–8 PM", l: "Una tarde", s: "Sesión de 3 horas · America/Cancún" },
-    { n: "4", l: "Personas por sesión", s: "Formato de grupo pequeño" },
-    { n: "LATÓN", l: "Fundición incluida", s: "Plata y oro se cotizan aparte" },
-  ],
   about: {
     heading: "No es una clase. Una entrada al taller.",
     tag: "La Veleta · Tulum",
