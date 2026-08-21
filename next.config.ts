@@ -31,11 +31,43 @@ const securityHeaders = [
   { key: "Content-Security-Policy", value: csp },
 ];
 
+/* Locale routing (replaces middleware).
+   The Edge middleware crashed in production with `__dirname is not
+   defined`, taking every page down with a 500. Next's own redirects and
+   rewrites do the same routing at the CDN layer: no function to invoke,
+   nothing to crash.
+     /            rewritten internally to /en
+     /es/...      served by app/[lang] with lang=es
+     /en/...      redirected to the unprefixed URL (no duplicate content)
+   /api, /auth, static assets and any path with a file extension are
+   excluded from the rewrite so they resolve as themselves. */
+const LOCALE_REWRITE_SOURCE =
+  "/:path((?!en$|en/|es$|es/|api/|auth/|_next/|assets/|uploads/)(?!.*\\.).*)";
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
     remotePatterns: [{ protocol: "https", hostname: "cdn.shopify.com" }],
+  },
+  async redirects() {
+    return [
+      { source: "/en", destination: "/", permanent: true },
+      { source: "/en/:path*", destination: "/:path*", permanent: true },
+      // Admin is a single-locale surface.
+      { source: "/es/admin", destination: "/admin", permanent: true },
+      { source: "/es/admin/:path*", destination: "/admin/:path*", permanent: true },
+    ];
+  },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        { source: "/", destination: "/en" },
+        { source: LOCALE_REWRITE_SOURCE, destination: "/en/:path" },
+      ],
+      afterFiles: [],
+      fallback: [],
+    };
   },
   async headers() {
     return [
