@@ -33,16 +33,30 @@ const securityHeaders = [
 
 /* Locale routing (replaces middleware).
    The Edge middleware crashed in production with `__dirname is not
-   defined`, taking every page down with a 500. Next's own redirects and
+   defined`, taking every page down with a 500. Next's redirects and
    rewrites do the same routing at the CDN layer: no function to invoke,
    nothing to crash.
      /            rewritten internally to /en
      /es/...      served by app/[lang] with lang=es
      /en/...      redirected to the unprefixed URL (no duplicate content)
-   /api, /auth, static assets and any path with a file extension are
-   excluded from the rewrite so they resolve as themselves. */
-const LOCALE_REWRITE_SOURCE =
-  "/:path((?!en$|en/|es$|es/|api/|auth/|_next/|assets/|uploads/)(?!.*\\.).*)";
+   The rewrites are listed one per top-level route on purpose. A single
+   catch-all with a negative lookahead works under `next start` but not
+   on Vercel, which compiles these rules into its own router and does not
+   honour the lookahead: it rewrote every path, including /en/... and
+   the API, into a dead one and the whole site 404'd. Explicit sources
+   have no such ambiguity; anything unlisted falls through to Next's
+   own catch-all and renders the site's 404. */
+const LOCALE_REWRITES = [
+  { source: "/", destination: "/en" },
+  { source: "/admin", destination: "/en/admin" },
+  { source: "/admin/:path*", destination: "/en/admin/:path*" },
+  { source: "/gallery", destination: "/en/gallery" },
+  { source: "/shop", destination: "/en/shop" },
+  { source: "/shop/:path*", destination: "/en/shop/:path*" },
+  { source: "/visit", destination: "/en/visit" },
+  { source: "/workshops", destination: "/en/workshops" },
+  { source: "/workshops/:path*", destination: "/en/workshops/:path*" },
+];
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -61,10 +75,7 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return {
-      beforeFiles: [
-        { source: "/", destination: "/en" },
-        { source: LOCALE_REWRITE_SOURCE, destination: "/en/:path" },
-      ],
+      beforeFiles: LOCALE_REWRITES,
       afterFiles: [],
       fallback: [],
     };
