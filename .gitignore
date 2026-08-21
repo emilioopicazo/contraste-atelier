@@ -6,3 +6,11 @@ Thumbs.db
 node_modules/
 .env
 *.log
+
+# Next.js / env
+.next/
+out/
+.env*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
